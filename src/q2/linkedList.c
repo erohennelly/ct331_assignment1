@@ -59,3 +59,66 @@ void deleteAfter(listElement* after){
   free(delete->data);
   free(delete);
 }
+int getLength(listElement* list) {
+
+	int length = 0;
+	listElement* current = list;
+	while (current != NULL) {
+		
+		current = current->next;
+		length++;
+	}
+	return length;
+}
+
+
+//new element onto the head of a list
+void push(listElement** list, char* data, size_t size) {
+
+	listElement* newEl = createEl(data, size);
+	//setting new element's next pointer as the head pointer that was passed in
+	newEl->next = *list;
+	*list = newEl;
+}
+//element from the head of a list.
+listElement* pop(listElement** list) {
+
+	listElement* head = *list;
+	//creating node to store popped element which is the head of list
+	listElement* poppedElement = createEl(head->data, head->size);
+	//setting a newhead element as the node next to the head.
+	listElement* newHead = head->next;
+	*list = newHead;
+	free(head->data);
+	free(head);
+	return poppedElement;
+}
+//same as push
+void enqueue(listElement** list, char* data, size_t size) {
+	listElement* newEl = createEl(data, size);
+	newEl->next = *list;
+	*list = newEl;
+}
+
+listElement* dequeue(listElement* list) {
+	//store head of list in current
+	listElement* current = list;
+	listElement* deq;
+	//find the last element and free that data inside it
+	while (current != NULL) {
+		//if last element == null - at the tail
+		if (current->next->next == NULL) {
+
+		    deq = createEl(current->next->data, current->next->size);
+			free(current->next->data);
+			free(current->next);
+			//set 2nd last element pointing to NULL
+			current->next = NULL;
+		}
+		current = current->next;
+	}
+	return deq;
+}
+
+
+
